@@ -23,7 +23,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://ggome1.github.io/ggome/",
+  "homepage": "https://master.d3r9i8n1xn7zym.amplifyapp.com/",
   "eslintConfig": {
     "extends": [
       "react-app",
