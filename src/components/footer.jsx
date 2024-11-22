@@ -10,10 +10,10 @@ const Footer = () => {
     );
   };
   return (
-    <div className="flex-grow flex flex-col sm:text-base text-[8px]">
-      <div className="h-full mt-1 whitespace-nowrap justify-center flex flex-col gap-4 lg:gap-6 bg-[#2d302d] px-8 lg:py-6 py-4">
+    <div className="flex-grow flex flex-col sm:text-base text-[8px] bg-[#2d302d]">
+      <div className="h-full mt-1 whitespace-nowrap justify-center flex flex-col gap-2 lg:gap-4 px-8 lg:py-6 py-3">
         <div className="flex w-full justify-between">
-          <div className="font-neue text-[10px] sm:text-[20px] text-neutral-10">
+          <div className="font-neue text-[10px] sm:text-[15px] lg:text-[20px] text-neutral-10">
             HCell Global
           </div>
           <div className="flex text-neutral-0 items-center gap-6">
@@ -45,16 +45,16 @@ const Footer = () => {
             <div className="border-l"></div>
             <div className="cursor-pointer">채용안내</div>
         </div> */}
-        <div className="sm:text-sm text-[7px] lg:flex flex-row lg:gap-20 font-label text-neutral-30">
+        <div className="lg:text-[14px] sm:text-[12px] text-[7px] flex justify-between lg:gap-20 font-label text-neutral-30">
           <div className="flex lg:gap-20 gap-10">
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1 sm:gap-2">
               <div>회사명</div>
               <div>대표이사</div>
               <div>사업자등록번호</div>
               {/* <div>통신판매업 신고번호</div> */}
               {/* <div>개인정보관리책임자</div> */}
             </div>
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-1 sm:gap-2">
               <div>에이치셀글로벌</div>
               <div>박상현</div>
               <div>298-86-02424</div>
@@ -62,7 +62,7 @@ const Footer = () => {
               {/* <div>박상현 shpark3965@naver.com</div> */}
             </div>
           </div>
-          <div className="flex flex-col gap-2 lg:mt-0 mt-2">
+          <div className="flex flex-col gap-2">
             <div>경기도 하남시 신우실로 110번길 31 네모빌딩 5층(감이동)</div>
           </div>
         </div>
