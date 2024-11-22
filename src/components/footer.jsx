@@ -46,7 +46,7 @@ const Footer = () => {
             <div className="cursor-pointer">채용안내</div>
         </div> */}
         <div className="lg:text-[14px] sm:text-[12px] text-[7px] flex justify-between lg:gap-20 font-label text-neutral-30">
-          <div className="flex lg:gap-20 gap-10">
+          <div className="flex lg:gap-15 gap-5">
             <div className="flex flex-col gap-1 sm:gap-2">
               <div>회사명</div>
               <div>대표이사</div>
