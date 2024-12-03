@@ -10,7 +10,7 @@ const Footer = () => {
     );
   };
   return (
-    <div className="flex-grow flex flex-col items-center bg-[#2d302d]">
+    <div className="flex flex-col sm:px-[10rem] bg-[#2d302d]">
       <div className="h-full mt-1 whitespace-nowrap justify-center flex flex-col gap-[1rem] px-[1rem] py-[1rem]">
         <div className="flex w-full text-[1rem] justify-between">
           <div className="font-neue text-neutral-10">

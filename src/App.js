@@ -1,22 +1,20 @@
-import { createContext, useEffect } from "react";
+import { createContext, useState } from "react";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Main from "./components/main";
 import "./global.css";
+import Review from "./components/review";
 
 export const ReadMeContext = createContext({});
 
 function App() {
-  useEffect(() => {
-    setTimeout(() => {
-      window.scrollTo(0, 0);
-    }, 100); // 0ms 지연
-  }, []);
+  const [tab, setTab] = useState("main");
+  const value = { tab, setTab };
   return (
     <div className="flex flex-col h-screen w-full overflow-x-auto">
-      <ReadMeContext.Provider>
+      <ReadMeContext.Provider value={value}>
         <Header />
-          <Main />
+        {tab === "main" ? <Main /> : <Review />}
         <Footer />
       </ReadMeContext.Provider>
     </div>
