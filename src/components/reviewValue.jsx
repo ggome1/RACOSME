@@ -12,7 +12,7 @@ const ReviewValue = () => {
             </div>
             <div className='flex flex-col font-body gap-[1rem]'>
                 <div className='flex gap-[1.5rem] items-center'>
-                    <div className='text-[2rem]'>★★★★★</div>
+                    <div className='text-[2rem] text-yell'>★★★★★</div>
                     <div className='text-neutral-50 text-[1rem]'>2024. 12. 03</div>
                 </div>
                 <div className='text-[1rem]'>

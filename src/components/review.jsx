@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import ReviewValue from './reviewValue';
 import { GoSmiley } from "react-icons/go";
+import Modal from './modal';
 
 const Review = () => {
     const [filter, setFilter] = useState('new');
+    const [modal, setModal] = useState(false);
     return (
-        <div className='w-full flex-grow flex flex-col mt-[4rem] py-[2rem] px-[2rem] gap-[2rem]'>
-            <div className='font-title text-[3rem]'>RACOSME</div>
-            <div className='flex justify-evenly border-y py-[1rem] px-[1rem]'>
-                <div className='flex flex-col justify-center items-center gap-[0.5rem]'>
-                    <GoSmiley size={'5rem'} color='green'/>
+        <div className='w-full flex-grow flex flex-col mt-[4rem] py-[3rem] px-[2rem] gap-[2rem]'>
+            <div className='font-neue text-[3rem]'>RACOSME</div>
+            <div className='flex justify-evenly border-y py-[2rem] px-[1rem]'>
+                <div className='flex flex-col justify-center items-center gap-[0.5rem] text-[1rem] font-title'>
+                    <GoSmiley size={'5rem'} color='green' />
                     <div>최고</div>
                 </div>
                 <div className='text-center font-label'>
@@ -18,7 +20,7 @@ const Review = () => {
                         <div className='text-[3rem] font-title'>5.0</div>
                         <div className='text-[2rem]'>점</div>
                     </div>
-                    <div className='text-[2rem]'>★★★★★</div>
+                    <div className='text-[2rem] text-yell'>★★★★★</div>
                 </div>
             </div>
             <div className='flex flex-col gap-[3rem] sm:px-[10rem]'>
@@ -27,12 +29,13 @@ const Review = () => {
                         <div onClick={() => setFilter('new')} className={`cursor-pointer ${filter === 'new' ? 'text-black' : 'text-neutral-30 hover:text-neutral-90'}`}>최신순</div>
                         <div onClick={() => setFilter('pop')} className={`cursor-pointer ${filter === 'pop' ? 'text-black' : 'text-neutral-30 hover:text-neutral-90'}`}>인기순</div>
                     </div>
-                    <div className='cursor-pointer border border-black hover:text-white hover:bg-black rounded-lg px-[1rem] py-[0.5rem]'>리뷰 작성하기</div>
+                    <div onClick={() => setModal(true)} className='cursor-pointer border border-black hover:text-white hover:bg-black rounded-lg px-[1rem] py-[0.5rem]'>리뷰 작성하기</div>
                 </div>
                 <ReviewValue />
                 <ReviewValue />
                 <ReviewValue />
             </div>
+            {modal && <Modal setModal={setModal} />}
         </div>
     );
 };
