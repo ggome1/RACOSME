@@ -14,7 +14,7 @@ function Main() {
       if (window.innerWidth <= 468) {
         setStyle({
           backgroundImage: `url(${process.env.PUBLIC_URL}/images/final_4.jpg)`,
-          backgroundRepeat: "repeat",
+          backgroundRepeat: "no-repeat",
           overflow: "auto",
           backgroundPosition: "center",
           backgroundSize: "contain", // 기본 설정
@@ -43,7 +43,7 @@ function Main() {
 
   return (
     <div
-      className="flex flex-col xs:min-h-[1020px] h-full justify-center items-center px-8 gap-4"
+      className="flex flex-col h-full justify-center items-center px-8 gap-4"
       style={style}
     ></div>
   );

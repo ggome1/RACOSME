@@ -10,14 +10,14 @@ const Footer = () => {
     );
   };
   return (
-    <div className="flex-grow flex flex-col sm:text-base text-[8px] items-center bg-[#2d302d]">
-      <div className="h-full mt-1 whitespace-nowrap justify-center flex flex-col gap-2 lg:gap-4 px-8 lg:py-6 py-3">
-        <div className="flex w-full text-[10px] sm:text-[15px] lg:text-[20px] justify-between">
+    <div className="flex-grow flex flex-col items-center bg-[#2d302d]">
+      <div className="h-full mt-1 whitespace-nowrap justify-center flex flex-col gap-[1rem] px-[1rem] py-[1rem]">
+        <div className="flex w-full text-[1rem] justify-between">
           <div className="font-neue text-neutral-10">
             HCell Global
           </div>
-          <div className="flex text-neutral-0 items-center gap-6">
-            <div className="text-neutral-40">HCell Global SNS</div>
+          <div className="text-[1rem] flex text-neutral-0 items-center gap-6">
+            <div className="text-neutral-40 font-neue">HCell Global SNS</div>
             <div className="flex gap-2">
               <FaInstagram
                 onClick={handleInstagramClick}
@@ -32,34 +32,17 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        {/* <div className="flex gap-2 font-label text-neutral-80">
-            <div className="cursor-pointer">이용약관</div>
-            <div className="border-l"></div>
-            <div className="cursor-pointer">개인정보 처리방침</div>
-            <div className="border-l"></div>
-            <div className="cursor-pointer">가맹점 및 입점 문의</div>
-            <div className="border-l"></div>
-            <div className="cursor-pointer">제휴 홍보 마케팅 문의</div>
-            <div className="border-l"></div>
-            <div className="cursor-pointer">본사정품판매처</div>
-            <div className="border-l"></div>
-            <div className="cursor-pointer">채용안내</div>
-        </div> */}
-        <div className="lg:text-[14px] sm:text-[12px] text-[7px] flex lg:gap-20 font-label text-neutral-30">
+        <div className="text-[0.7rem] flex lg:gap-20 font-label text-neutral-30">
           <div className="flex lg:gap-15 gap-5">
             <div className="flex flex-col gap-1 sm:gap-2">
               <div>회사명</div>
               <div>대표이사</div>
               <div>사업자등록번호</div>
-              {/* <div>통신판매업 신고번호</div> */}
-              {/* <div>개인정보관리책임자</div> */}
             </div>
             <div className="flex flex-col gap-1 sm:gap-2">
               <div>에이치셀글로벌</div>
               <div>박상현</div>
               <div>298-86-02424</div>
-              {/* <div>00 0000</div> */}
-              {/* <div>박상현 shpark3965@naver.com</div> */}
             </div>
           </div>
           <div className="flex flex-col gap-2">
