@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import axios from 'axios';
+import { uploadImageAndGetURL } from '../firebase/uploadImageAndGetURL';
 const Modal = ({ setModal }) => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState(null)
@@ -9,15 +10,14 @@ const Modal = ({ setModal }) => {
     const [preview, setPreview] = useState(null);
     const fileInputRef = useRef(null);
 
-    const handleImageUpload = (event) => {
+    const handleImageUpload = async (event) => {
         const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
         if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                console.log(reader.result)
-                setPreview(reader.result); // 미리보기 URL 설정
-            };
-            reader.readAsDataURL(file);
+            const filePath = `/${Date.now()}`;
+            const url = await uploadImageAndGetURL(formData, filePath);
+            setPreview(url);
         }
     };
 
@@ -31,7 +31,7 @@ const Modal = ({ setModal }) => {
         console.log(content)
 
         try {
-            const response = await axios.post('http://43.203.223.45:8080/reviews', reviewData, {
+            const response = await axios.post('https://43.203.223.45:8443/reviews', reviewData, {
                 headers: {
                     'Content-Type': 'application/json', // JSON 형식으로 전송
                 },

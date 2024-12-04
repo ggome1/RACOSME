@@ -7,15 +7,17 @@ import axios from 'axios'
 
 const Review = () => {
     const [review, setReview] = useState([]);
+    const [count, setCount] = useState(0);
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await axios.get('http://43.203.223.45:8080/reviews', {
+                const response = await axios.get('https://43.203.223.45:8443/reviews', {
                     headers: {
                         'Content-Type': 'application/json', // 헤더 설정
                     },
                 });
                 setReview(response.data);
+                setCount(response.data.length);
                 console.log('응답 데이터:', response.data); // 가져온 데이터 출력
             } catch (error) {
                 console.error('데이터 가져오기 실패:', error); // 에러 처리
@@ -36,7 +38,7 @@ const Review = () => {
                     <div>최고</div>
                 </div>
                 <div className='text-center font-label'>
-                    <div className='text-[1.5rem]'>총 9999건</div>
+                    <div className='text-[1.5rem]'>총 {count}건</div>
                     <div className='flex gap-[0.5rem] items-center justify-center'>
                         <div className='text-[3rem] font-title'>5.0</div>
                         <div className='text-[2rem]'>점</div>
@@ -58,13 +60,13 @@ const Review = () => {
                             <div className='flex gap-[1rem]'>
                                 <div className='w-[4rem] h-[4rem] border rounded-full'></div>
                                 <div className='flex flex-col gap-[0.5rem] font-label py-[0.3rem]'>
-                                    <div className='text-[1rem]'>{element.nickname}</div>
+                                    <div className='text-[1rem] min-w-[5rem]'>{element.nickname}</div>
                                     <div className='font-body w-[3rem] text-[0.6rem] bg-neutral-10 text-neutral-50 rounded-sm text-center py-[0.2rem] px-[0.5rem]'>체험단</div>
                                 </div>
                             </div>
                             <div className='flex flex-col font-body gap-[1rem]'>
                                 <div className='flex gap-[1.5rem] items-center'>
-                                    <div className='flex gap-[0.2rem] items-center font-label'>
+                                    <div className='flex gap-[0.2rem] font-label'>
                                         {element.score > 0 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
                                         {element.score > 1 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
                                         {element.score > 2 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
