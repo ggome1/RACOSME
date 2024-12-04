@@ -1,13 +1,12 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import Main from "./components/main";
 import "./global.css";
 import Review from "./components/review";
-
 export const ReadMeContext = createContext({});
-
 function App() {
+
   const [tab, setTab] = useState("main");
   const value = { tab, setTab };
   return (

@@ -1,9 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReviewValue from './reviewValue';
 import { GoSmiley } from "react-icons/go";
 import Modal from './modal';
+import axios from 'axios'
+
 
 const Review = () => {
+    const [review, setReview] = useState([]);
+    useEffect(() => {
+        const fetchReviews = async () => {
+            try {
+                const response = await axios.get('http://43.203.223.45:8080/reviews', {
+                    headers: {
+                        'Content-Type': 'application/json', // 헤더 설정
+                    },
+                });
+                setReview(response.data);
+                console.log('응답 데이터:', response.data); // 가져온 데이터 출력
+            } catch (error) {
+                console.error('데이터 가져오기 실패:', error); // 에러 처리
+            }
+        };
+
+        fetchReviews();
+
+    }, [])
     const [filter, setFilter] = useState('new');
     const [modal, setModal] = useState(false);
     return (
@@ -31,9 +52,41 @@ const Review = () => {
                     </div>
                     <div onClick={() => setModal(true)} className='cursor-pointer border border-black hover:text-white hover:bg-black rounded-lg px-[1rem] py-[0.5rem]'>리뷰 작성하기</div>
                 </div>
-                <ReviewValue />
-                <ReviewValue />
-                <ReviewValue />
+                {review.map((element) => {
+                    return (
+                        <div key={element.id} className='flex gap-[4rem]'>
+                            <div className='flex gap-[1rem]'>
+                                <div className='w-[4rem] h-[4rem] border rounded-full'></div>
+                                <div className='flex flex-col gap-[0.5rem] font-label py-[0.3rem]'>
+                                    <div className='text-[1rem]'>{element.nickname}</div>
+                                    <div className='font-body w-[3rem] text-[0.6rem] bg-neutral-10 text-neutral-50 rounded-sm text-center py-[0.2rem] px-[0.5rem]'>체험단</div>
+                                </div>
+                            </div>
+                            <div className='flex flex-col font-body gap-[1rem]'>
+                                <div className='flex gap-[1.5rem] items-center'>
+                                    <div className='flex gap-[0.2rem] items-center font-label'>
+                                        {element.score > 0 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
+                                        {element.score > 1 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
+                                        {element.score > 2 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
+                                        {element.score > 3 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
+                                        {element.score > 4 && <div className={`text-[1.7rem] cursor-pointer text-yell`}>★</div>}
+                                    </div>
+                                    <div className='text-neutral-50 text-[1rem]'>{element.updatedAt.slice(0, 10)}</div>
+                                </div>
+                                <div className='text-[1rem]'>
+                                    <div className='whitespace-pre-line'>
+                                        {element.content}
+                                    </div>
+                                </div>
+                                {element.image &&
+                                    <div className='flex gap-[0.5rem]'>
+                                        <div className='w-[5rem] h-[5rem] bg-neutral-20'>{element.image}</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    )
+                })}
             </div>
             {modal && <Modal setModal={setModal} />}
         </div>

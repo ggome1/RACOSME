@@ -1,26 +1,47 @@
 import React, { useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
-
+import axios from 'axios';
 const Modal = ({ setModal }) => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState(null)
     const [nickname, setNickname] = useState('');
     const [content, setContent] = useState('');
-    const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(null);
     const fileInputRef = useRef(null);
 
     const handleImageUpload = (event) => {
         const file = event.target.files[0];
         if (file) {
-            setImage(file);
             const reader = new FileReader();
             reader.onloadend = () => {
+                console.log(reader.result)
                 setPreview(reader.result); // 미리보기 URL 설정
             };
             reader.readAsDataURL(file);
         }
     };
+
+    const handleClick = async () => {
+        const reviewData = {
+            nickname: nickname, // 닉네임
+            content: content, // 리뷰 내용
+            score: star, // 점수
+            image: preview,
+        };
+        console.log(content)
+
+        try {
+            const response = await axios.post('http://43.203.223.45:8080/reviews', reviewData, {
+                headers: {
+                    'Content-Type': 'application/json', // JSON 형식으로 전송
+                },
+            });
+            setModal(false)
+            console.log('응답 데이터:', response.data); // 서버 응답 출력
+        } catch (error) {
+            console.error('리뷰 전송 실패:', error.response || error.message || error);
+        }
+    }
 
     const triggerFileInput = () => {
         fileInputRef.current.click(); // 숨겨진 input을 클릭
@@ -39,7 +60,7 @@ const Modal = ({ setModal }) => {
                     <div className='font-title text-[1.2rem]'>어떤 점이 좋았나요?</div>
                     <div className='flex flex-col gap-[0.5rem]'>
                         <div className='font-label text-[1rem]'>닉네임 입력 (필수)</div>
-                        <input className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] rounded-lg' value={nickname} onChange={(e) => setNickname(e.target.value)}/>
+                        <input className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] rounded-lg' value={nickname} onChange={(e) => setNickname(e.target.value)} />
                         <div className='flex justify-end font-label text-neutral-40 text-[0.7rem]'>{nickname.length}/10</div>
                     </div>
                 </div>
@@ -84,7 +105,7 @@ const Modal = ({ setModal }) => {
                     </div>
                 </div>
                 <div className='flex-grow flex items-end justify-end'>
-                    <div className='cursor-pointer hover:border hover:bg-white hover:text-black bg-black px-[4rem] py-[0.7rem] rounded-lg text-white font-label text-[1rem]'>등록하기</div>
+                    <div onClick={handleClick} className='cursor-pointer hover:border hover:bg-white hover:text-black bg-black px-[4rem] py-[0.7rem] rounded-lg text-white font-label text-[1rem]'>등록하기</div>
                 </div>
             </div>
         </div>
