@@ -1,40 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { GoSmiley } from "react-icons/go";
 import Modal from './modal';
-import axios from 'axios'
-
+import axios from 'axios';
 
 const Review = () => {
     const [review, setReview] = useState([]);
     const [count, setCount] = useState(0);
     const [filter, setFilter] = useState('new');
     const [modal, setModal] = useState(false);
+    const [averageScore, setAverageScore] = useState(0);
+
+    // 리뷰 데이터 가져오기 및 정렬
     const fetchReviews = async () => {
         try {
             const response = await axios.get('https://43.203.223.45.nip.io/reviews', {
                 headers: {
-                    'Content-Type': 'application/json', // 헤더 설정
+                    'Content-Type': 'application/json',
                 },
             });
+
+            // 데이터 정렬
             const sortedData = response.data.sort((a, b) => {
                 if (filter === 'new') {
                     return new Date(b.updatedAt) - new Date(a.updatedAt); // 최신순
                 } else if (filter === 'pop') {
                     return new Date(a.updatedAt) - new Date(b.updatedAt); // 오래된 순
                 }
-                return 0; // 기본 정렬
+                return 0;
             });
 
             setReview(sortedData);
             setCount(sortedData.length);
-            console.log('응답 데이터:', response.data); // 가져온 데이터 출력
+            calculateAverageScore(sortedData); // 평균 점수 계산
         } catch (error) {
-            console.error('데이터 가져오기 실패:', error); // 에러 처리
+            console.error('데이터 가져오기 실패:', error);
         }
     };
+
+    // 평균 점수 계산
+    const calculateAverageScore = (reviews) => {
+        if (reviews.length === 0) {
+            setAverageScore(0);
+            return;
+        }
+
+        const totalScore = reviews.reduce((sum, item) => sum + item.score, 0);
+        const avgScore = totalScore / reviews.length;
+        setAverageScore(avgScore.toFixed(1)); // 소수점 1자리
+    };
+
+    // filter가 변경될 때 fetchReviews 호출
     useEffect(() => {
         fetchReviews();
-    }, [])
+    }, [filter]);
+
     return (
         <div className='w-full flex-grow flex flex-col mt-[4rem] py-[3rem] px-[2rem] gap-[2rem]'>
             <div className='font-neue text-[3rem]'>RACOSME</div>
@@ -46,7 +65,7 @@ const Review = () => {
                 <div className='text-center font-label'>
                     <div className='text-[1.5rem]'>총 {count}건</div>
                     <div className='flex gap-[0.5rem] items-center justify-center'>
-                        <div className='text-[3rem] font-title'>5.0</div>
+                        <div className='text-[3rem] font-title'>{averageScore}</div>
                         <div className='text-[2rem]'>점</div>
                     </div>
                     <div className='text-[2rem] text-yell'>★★★★★</div>
@@ -86,19 +105,18 @@ const Review = () => {
                                         {element.content}
                                     </div>
                                 </div>
-                                <div className='flex gap-[0.5rem] w-[6rem] h-[7rem]'>
-                                    {element.images?.length > 0 &&
-                                        element.images.map((file, index) => {
-                                            console.log(file)
+                                {element.images?.length > 0 &&
+                                    <div className='flex gap-[0.5rem] w-[6rem] h-[7rem]'>
+                                        {element.images.map((file, index) => {
                                             return (
-                                                <img key={index} src={file} alt='img' />
-                                            )
-                                        })
-                                    }
-                                </div>
+                                        <img key={index} src={file} alt='img' />
+                                        );
+                                        })}
+                                    </div>
+                                }
                             </div>
                         </div>
-                    )
+                    );
                 })}
             </div>
             {modal && <Modal func={fetchReviews} setModal={setModal} />}

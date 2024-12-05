@@ -25,12 +25,12 @@ const Modal = ({ setModal, func }) => {
     const handleDeleteUnusedFiles = async () => {
         const storage = getStorage();
         preview.forEach(async (element) => {
-          const storageRef = ref(storage, element);
-          await deleteObject(storageRef).catch((error) => {
-            console.error("Error deleting file:", error);
-          });
+            const storageRef = ref(storage, element);
+            await deleteObject(storageRef).catch((error) => {
+                console.error("Error deleting file:", error);
+            });
         });
-      };
+    };
 
     const handleClick = async () => {
         const reviewData = {
@@ -56,7 +56,12 @@ const Modal = ({ setModal, func }) => {
     }
 
     const triggerFileInput = () => {
-        fileInputRef.current.click(); // 숨겨진 input을 클릭
+        if (preview.length >= 3) {
+            alert('사진은 3개까지 등록 가능합니다.')
+            return ;
+        } else {
+            fileInputRef.current.click(); // 숨겨진 input을 클릭
+        }
     };
 
     return (
@@ -64,7 +69,7 @@ const Modal = ({ setModal, func }) => {
             <div onClick={(e) => e.stopPropagation()} className="p-[2rem] bg-white rounded shadow-lg w-full h-full max-w-[1000px] overflow-auto flex flex-col">
                 <button
                     className="absolute top-[0.5rem] right-[1rem] text-gray-500 hover:text-gray-800"
-                    onClick={() => {handleDeleteUnusedFiles(); setModal(false);}}
+                    onClick={() => { handleDeleteUnusedFiles(); setModal(false); }}
                 >
                     x
                 </button>
@@ -72,8 +77,8 @@ const Modal = ({ setModal, func }) => {
                     <div className='font-title text-[1.2rem]'>어떤 점이 좋았나요?</div>
                     <div className='flex flex-col gap-[0.5rem]'>
                         <div className='font-label text-[1rem]'>닉네임 입력 (필수)</div>
-                        <input className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] rounded-lg' value={nickname} onChange={(e) => setNickname(e.target.value)} />
-                        <div className='flex justify-end font-label text-neutral-40 text-[0.7rem]'>{nickname.length}/10</div>
+                        <input className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] rounded-lg' value={nickname} onChange={(e) => {if(e.target.value.length <= 6) setNickname(e.target.value)}} />
+                        <div className='flex justify-end font-label text-neutral-40 text-[0.7rem]'>{nickname.length}/6</div>
                     </div>
                 </div>
                 <div className='flex flex-col gap-[1rem] border-b py-[1rem]'>
@@ -91,7 +96,7 @@ const Modal = ({ setModal, func }) => {
                     <div className='font-title text-[1.2rem]'>어떤 점이 좋았나요?</div>
                     <div className='flex flex-col gap-[0.5rem]'>
                         <div className='font-label text-[1rem]'>본문 입력 (필수)</div>
-                        <textarea value={content} onChange={(e) => setContent(e.target.value)} className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] h-[7rem] rounded-lg'></textarea>
+                        <textarea value={content} onChange={(e) => {if(e.target.value.length <= 200) setContent(e.target.value)}} className='text-[1rem] font-body border border-neutral-40 p-[0.5rem] h-[7rem] rounded-lg'></textarea>
                         <div className='flex justify-end font-label text-neutral-40 text-[0.7rem]'>{content.length}/500</div>
                     </div>
                 </div>
