@@ -3,7 +3,7 @@ import { CiImageOn } from "react-icons/ci";
 import axios from 'axios';
 import { uploadImageAndGetURL } from '../firebase/uploadImageAndGetURL';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
-const Modal = ({ setModal }) => {
+const Modal = ({ setModal, func }) => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState(null)
     const [nickname, setNickname] = useState('');
@@ -37,9 +37,9 @@ const Modal = ({ setModal }) => {
             nickname: nickname, // 닉네임
             content: content, // 리뷰 내용
             score: star, // 점수
-            image: preview,
+            images: preview,
         };
-        console.log(content)
+        console.log(reviewData)
 
         try {
             const response = await axios.post('https://43.203.223.45.nip.io/reviews', reviewData, {
@@ -47,6 +47,7 @@ const Modal = ({ setModal }) => {
                     'Content-Type': 'application/json', // JSON 형식으로 전송
                 },
             });
+            func();
             setModal(false)
             console.log('응답 데이터:', response.data); // 서버 응답 출력
         } catch (error) {

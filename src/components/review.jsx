@@ -7,27 +7,34 @@ import axios from 'axios'
 const Review = () => {
     const [review, setReview] = useState([]);
     const [count, setCount] = useState(0);
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await axios.get('https://43.203.223.45.nip.io/reviews', {
-                    headers: {
-                        'Content-Type': 'application/json', // 헤더 설정
-                    },
-                });
-                setReview(response.data);
-                setCount(response.data.length);
-                console.log('응답 데이터:', response.data); // 가져온 데이터 출력
-            } catch (error) {
-                console.error('데이터 가져오기 실패:', error); // 에러 처리
-            }
-        };
-
-        fetchReviews();
-
-    }, [])
     const [filter, setFilter] = useState('new');
     const [modal, setModal] = useState(false);
+    const fetchReviews = async () => {
+        try {
+            const response = await axios.get('https://43.203.223.45.nip.io/reviews', {
+                headers: {
+                    'Content-Type': 'application/json', // 헤더 설정
+                },
+            });
+            const sortedData = response.data.sort((a, b) => {
+                if (filter === 'new') {
+                    return new Date(b.updatedAt) - new Date(a.updatedAt); // 최신순
+                } else if (filter === 'pop') {
+                    return new Date(a.updatedAt) - new Date(b.updatedAt); // 오래된 순
+                }
+                return 0; // 기본 정렬
+            });
+
+            setReview(sortedData);
+            setCount(sortedData.length);
+            console.log('응답 데이터:', response.data); // 가져온 데이터 출력
+        } catch (error) {
+            console.error('데이터 가져오기 실패:', error); // 에러 처리
+        }
+    };
+    useEffect(() => {
+        fetchReviews();
+    }, [])
     return (
         <div className='w-full flex-grow flex flex-col mt-[4rem] py-[3rem] px-[2rem] gap-[2rem]'>
             <div className='font-neue text-[3rem]'>RACOSME</div>
@@ -49,7 +56,7 @@ const Review = () => {
                 <div className='text-[1rem] flex justify-between items-center font-label'>
                     <div className='flex gap-[1rem]'>
                         <div onClick={() => setFilter('new')} className={`cursor-pointer ${filter === 'new' ? 'text-black' : 'text-neutral-30 hover:text-neutral-90'}`}>최신순</div>
-                        <div onClick={() => setFilter('pop')} className={`cursor-pointer ${filter === 'pop' ? 'text-black' : 'text-neutral-30 hover:text-neutral-90'}`}>인기순</div>
+                        <div onClick={() => setFilter('pop')} className={`cursor-pointer ${filter === 'pop' ? 'text-black' : 'text-neutral-30 hover:text-neutral-90'}`}>오래된 순</div>
                     </div>
                     <div onClick={() => setModal(true)} className='cursor-pointer border border-black hover:text-white hover:bg-black rounded-lg px-[1rem] py-[0.5rem]'>리뷰 작성하기</div>
                 </div>
@@ -79,17 +86,22 @@ const Review = () => {
                                         {element.content}
                                     </div>
                                 </div>
-                                {element.image &&
-                                    <div className='flex gap-[0.5rem]'>
-                                        <div className='w-[5rem] h-[5rem] bg-neutral-20'>{element.image}</div>
-                                    </div>
-                                }
+                                <div className='flex gap-[0.5rem] w-[6rem] h-[7rem]'>
+                                    {element.images?.length > 0 &&
+                                        element.images.map((file, index) => {
+                                            console.log(file)
+                                            return (
+                                                <img key={index} src={file} alt='img' />
+                                            )
+                                        })
+                                    }
+                                </div>
                             </div>
                         </div>
                     )
                 })}
             </div>
-            {modal && <Modal setModal={setModal} />}
+            {modal && <Modal func={fetchReviews} setModal={setModal} />}
         </div>
     );
 };
