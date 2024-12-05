@@ -4,14 +4,11 @@ import { ReadMeContext } from "../App";
 const Header = () => {
   const { setTab } = useContext(ReadMeContext);
   return (
-    <div className="absolute bg-white max-h-[10rem]  min-w-full flex flex-col py-[1.5rem] rounded-b-2xl shadow-lg whitespace-nowrap overflow-visible">
-      <div className="flex justify-center items-center gap-20 h-full px-8">
-        <div className="absolute left-[2rem]">
-          <img className="max-w-[9rem]" src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="Banner" />
-        </div>
-        <div className="flex gap-[2rem] font-body text-[1.1rem]">
-          <div className="cursor-pointer" onClick={() => setTab('main')}>Main</div>
-          <div className="cursor-pointer" onClick={() => setTab('review')}>Review</div>
+    <div className="absolute bg-white max-h-[10rem]  min-w-full flex flex-col py-[0.5rem] rounded-b-2xl shadow-lg whitespace-nowrap overflow-visible">
+      <div className="flex justify-center items-center px-[3rem]">
+        <div className="w-full flex justify-between items-center">
+          <img onClick={() => setTab('main')} className="cursor-pointer max-w-[8rem]" src={`${process.env.PUBLIC_URL}/images/logo.png`} alt="Banner" />
+          <div className="cursor-pointer text-[1rem] font-label" onClick={() => setTab('review')}>체험단 리뷰</div>
         </div>
       </div>
     </div>

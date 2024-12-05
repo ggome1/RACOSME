@@ -102,7 +102,7 @@ const Review = () => {
                                 <GiButterflyFlower color='gray' size={'1.5rem'} />
                             </div>
                             <div className='flex flex-col gap-[0.5rem] font-label py-[0.3rem]'>
-                                <div className='flex items-center gap-[0.5rem]'>
+                                <div className='flex items-center gap-[0.5rem] min-w-[5rem]'>
                                     <div className='text-[1rem]'>{element.nickname}</div>
                                     {element.instagramUrl && <img onClick={() => window.open(element.instagramUrl)} className='cursor-pointer w-[1rem] h-[1rem]' src={`${process.env.PUBLIC_URL}/images/instagram.svg`} alt='' />}
                                 </div>
