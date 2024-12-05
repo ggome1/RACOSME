@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ReviewValue from './reviewValue';
 import { GoSmiley } from "react-icons/go";
 import Modal from './modal';
 import axios from 'axios'
@@ -11,7 +10,7 @@ const Review = () => {
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const response = await axios.get('https://43.203.223.45:8443/reviews', {
+                const response = await axios.get('https://43.203.223.45.nip.io/reviews', {
                     headers: {
                         'Content-Type': 'application/json', // 헤더 설정
                     },

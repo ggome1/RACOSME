@@ -2,12 +2,13 @@ import React, { useRef, useState } from 'react';
 import { CiImageOn } from "react-icons/ci";
 import axios from 'axios';
 import { uploadImageAndGetURL } from '../firebase/uploadImageAndGetURL';
+import { deleteObject, getStorage, ref } from 'firebase/storage';
 const Modal = ({ setModal }) => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState(null)
     const [nickname, setNickname] = useState('');
     const [content, setContent] = useState('');
-    const [preview, setPreview] = useState(null);
+    const [preview, setPreview] = useState([]);
     const fileInputRef = useRef(null);
 
     const handleImageUpload = async (event) => {
@@ -17,9 +18,19 @@ const Modal = ({ setModal }) => {
         if (file) {
             const filePath = `/${Date.now()}`;
             const url = await uploadImageAndGetURL(formData, filePath);
-            setPreview(url);
+            setPreview((preview) => [...preview, url]);
         }
     };
+
+    const handleDeleteUnusedFiles = async () => {
+        const storage = getStorage();
+        preview.forEach(async (element) => {
+          const storageRef = ref(storage, element);
+          await deleteObject(storageRef).catch((error) => {
+            console.error("Error deleting file:", error);
+          });
+        });
+      };
 
     const handleClick = async () => {
         const reviewData = {
@@ -31,7 +42,7 @@ const Modal = ({ setModal }) => {
         console.log(content)
 
         try {
-            const response = await axios.post('https://43.203.223.45:8443/reviews', reviewData, {
+            const response = await axios.post('https://43.203.223.45.nip.io/reviews', reviewData, {
                 headers: {
                     'Content-Type': 'application/json', // JSON 형식으로 전송
                 },
@@ -48,11 +59,11 @@ const Modal = ({ setModal }) => {
     };
 
     return (
-        <div onClick={(e) => { e.stopPropagation(); setModal(false) }} className="fixed inset-0 px-[5rem] py-[5rem] flex items-center justify-center bg-black bg-opacity-50">
+        <div onClick={(e) => { e.stopPropagation(); handleDeleteUnusedFiles(); setModal(false) }} className="fixed inset-0 px-[5rem] py-[5rem] flex items-center justify-center bg-black bg-opacity-50">
             <div onClick={(e) => e.stopPropagation()} className="p-[2rem] bg-white rounded shadow-lg w-full h-full max-w-[1000px] overflow-auto flex flex-col">
                 <button
                     className="absolute top-[0.5rem] right-[1rem] text-gray-500 hover:text-gray-800"
-                    onClick={() => setModal(false)}
+                    onClick={() => {handleDeleteUnusedFiles(); setModal(false);}}
                 >
                     x
                 </button>
@@ -97,11 +108,17 @@ const Modal = ({ setModal }) => {
                         <div onClick={triggerFileInput} className='cursor-pointer w-[5rem] h-[6rem] border rounded-lg border-neutral-40 flex justify-center items-center'>
                             <CiImageOn size={'3rem'} color='gray' />
                         </div>
-                        {preview && <img
-                            src={preview}
-                            alt="Uploaded"
-                            className="w-[5rem] h-[6rem] object-cover rounded-lg"
-                        />}
+                        {preview.length > 0 &&
+                            preview.map((element) => {
+                                return (
+                                    <img
+                                        src={element}
+                                        alt="Uploaded"
+                                        className="w-[5rem] h-[6rem] object-cover rounded-lg"
+                                    />
+                                )
+                            })
+                        }
                     </div>
                 </div>
                 <div className='flex-grow flex items-end justify-end'>
