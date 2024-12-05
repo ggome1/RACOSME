@@ -44,6 +44,17 @@ const Review = () => {
         }
     };
 
+    // const deleteData = async () => {
+    //     try {
+    //         review.forEach(element => {
+    //             console.log(element.id);
+    //             const response = axios.delete(`https://43.203.223.45.nip.io/reviews/${element.id}`)
+    //         });
+    //     } catch {
+
+    //     }
+    // }
+
     // 평균 점수 계산
     const calculateAverageScore = (reviews) => {
         if (reviews.length === 0) {
@@ -55,7 +66,6 @@ const Review = () => {
         const avgScore = totalScore / reviews.length;
         setAverageScore(avgScore.toFixed(1));
     };
-
     // filter 변경 시 fetchReviews 호출
     useEffect(() => {
         fetchReviews();
@@ -124,7 +134,7 @@ const Review = () => {
                             {element.images?.length > 0 &&
                                 <div className='flex gap-[0.5rem] w-[6rem] h-[7rem]'>
                                     {element.images.map((file, index) => (
-                                        <img onClick={() => { setCurFile(file); setImageModal(true); }} className='rounded-lg cursor-pointer' key={index} src={file} alt='img' />
+                                        <img onClick={() => { setCurFile(file); setImageModal(true); }} className='rounded-lg cursor-pointer object-cover' key={index} src={file} alt='img' />
                                     ))}
                                 </div>
                             }

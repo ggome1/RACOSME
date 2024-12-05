@@ -3,6 +3,7 @@ import { CiImageOn } from "react-icons/ci";
 import axios from 'axios';
 import { uploadImageAndGetURL } from '../firebase/uploadImageAndGetURL';
 import { deleteObject, getStorage, ref } from 'firebase/storage';
+import { MdClose } from 'react-icons/md';
 const Modal = ({ setModal, func }) => {
     const [star, setStar] = useState(0);
     const [comment, setComment] = useState(null)
@@ -33,6 +34,16 @@ const Modal = ({ setModal, func }) => {
                 console.error("Error deleting file:", error);
             });
         });
+    };
+    const handleDeleteUnusedFile = async (file) => {
+        const storage = getStorage();
+        const storageRef = ref(storage, file);
+        await deleteObject(storageRef).catch((error) => {
+            console.error("Error deleting file:", error);
+        });
+        const updatedPreview = preview.filter((previewFile) => previewFile !== file);
+        // 상태 업데이트
+        setPreview(updatedPreview);
     };
 
     const handleClick = async () => {
@@ -84,13 +95,8 @@ const Modal = ({ setModal, func }) => {
 
     return (
         <div onClick={(e) => { e.stopPropagation(); handleDeleteUnusedFiles(); setModal(false) }} className="fixed inset-0 sm:px-[5rem] px-[2rem] py-[5rem] flex items-center justify-center bg-black bg-opacity-50">
-            <div onClick={(e) => e.stopPropagation()} className="p-[2rem] bg-white rounded shadow-lg w-full h-full max-w-[1000px] overflow-auto flex flex-col">
-                <button
-                    className="absolute top-[0.5rem] right-[1rem] text-gray-500 hover:text-gray-800"
-                    onClick={() => { handleDeleteUnusedFiles(); setModal(false); }}
-                >
-                    x
-                </button>
+            <div onClick={(e) => e.stopPropagation()} className="relative p-[2rem] bg-white rounded shadow-lg w-full h-full max-w-[1000px] overflow-auto flex flex-col">
+                <MdClose onClick={() => setModal(false)} className='cursor-pointer absolute right-[1rem] top-[2rem]' size={'2rem'} color='black' />
                 <div className='flex flex-col gap-[1rem] border-b py-[1rem]'>
                     <div className='font-title text-[1.2rem]'>라코스메 후기</div>
                     <div className='flex flex-col gap-[0.5rem]'>
@@ -144,11 +150,14 @@ const Modal = ({ setModal, func }) => {
                         {preview.length > 0 &&
                             preview.map((element) => {
                                 return (
-                                    <img
-                                        src={element}
-                                        alt="Uploaded"
-                                        className="w-[5rem] h-[6rem] object-cover rounded-lg"
-                                    />
+                                    <div className='flex flex-col items-center gap-[0.5rem]'>
+                                        <img
+                                            src={element}
+                                            alt="Uploaded"
+                                            className="w-[5rem] h-[6rem] object-cover rounded-lg"
+                                        />
+                                        <div onClick={() => { handleDeleteUnusedFile(element) }} className='cursor-pointer text-[1rem] text-error-20 font-body'>취소</div>
+                                    </div>
                                 )
                             })
                         }
